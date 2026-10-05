@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Timur Rizvanov</title>
+<meta name="description" content="Timur Rizvanov - machine learning and computational chemistry researcher at Boston University; author of the rDeckgl and rMosaic R packages.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+
+<header>
+  <h1>Timur Rizvanov</h1>
+  <p class="lede">Machine learning and computational chemistry researcher at Boston University, where I study Chemistry and Computer Science (double major, expected May 2027). I build models of protein electron transfer and open-source software for large-scale scientific data.</p>
+  <nav>
+    <a href="https://github.com/TiRizvanov">GitHub</a>
+    <a href="https://www.linkedin.com/in/timurrizvanov">LinkedIn</a>
+    <a href="mailto:timurr@bu.edu">timurr@bu.edu</a>
+  </nav>
+</header>
+
+<section id="code">
+  <h2>Open-source code</h2>
+  <p>Two R packages that I wrote and maintain, both released on CRAN under the MIT license. Each one bundles a JavaScript rendering layer with an R interface, hydrates data through DuckDB, and ships Shiny bindings, tests and vignettes.</p>
+
+  <article class="project">
+    <h3>rDeckgl</h3>
+    <p>R bindings for deck.gl: large interactive WebGL visualizations from R through htmlwidgets, with DuckDB-backed data hydration and Shiny integration.</p>
+    <p class="links">
+      <a href="https://github.com/TiRizvanov/rDeckgl">Source on GitHub</a>
+      <a href="https://cran.r-project.org/package=rDeckgl">CRAN</a>
+    </p>
+<pre><code>library(rDeckgl)
+
+spec &lt;- list(
+  `@@type` = "DeckGL",
+  initialViewState = list(longitude = -122.4, latitude = 37.76, zoom = 12),
+  layers = list(
+    list(
+      `@@type` = "ScatterplotLayer",
+      id   = "points",
+      data = list(type = "duckdb", query = "SELECT lon, lat, radius FROM points"),
+      getPosition  = "@@=[lon, lat]",
+      getRadius    = "@@=radius",
+      getFillColor = c(255, 0, 0)
+    )
+  )
+)
+
+points &lt;- data.frame(
+  lon    = c(-122.40, -122.45, -122.35),
+  lat    = c( 37.76,   37.78,   37.74),
+  radius = c(100,      150,     200)
+)
+
+deckgl(spec, data = list(points = points), width = "100%", height = "500px")</code></pre>
+  </article>
+
+  <article class="project">
+    <h3>rMosaic</h3>
+    <p>R bindings for the Mosaic declarative visualization framework: linked, interactive plots with brushing and cross-filtering, queried through DuckDB or DuckDB-WASM in the browser, with selections exported back to R.</p>
+    <p class="links">
+      <a href="https://github.com/TiRizvanov/rMosaic">Source on GitHub</a>
+      <a href="https://cran.r-project.org/package=rMosaic">CRAN</a>
+    </p>
+<pre><code>library(rMosaic)
+
+spec &lt;- '{
+  "data": { "df": {} },
+  "plot": [{
+    "mark": "dot",
+    "data": { "from": "df" },
+    "x": "x", "y": "y", "fill": "grp"
+  }],
+  "width": 600, "height": 400
+}'
+
+runMosaicApp(spec = spec, specType = "json", data = list(df = df))</code></pre>
+  </article>
+</section>
+
+<section id="research">
+  <h2>Research</h2>
+
+  <article class="role">
+    <h3>Bravaya Lab, Boston University <span>September 2025 - present</span></h3>
+    <p class="title">Machine learning and computational chemistry - protein electron transfer</p>
+    <ul>
+      <li>Deep-learning models that predict electronic couplings between protein residues in seconds instead of expensive quantum-chemistry calculations, trained on 270,000+ Q-Chem calculations across 38 residue-pair types.</li>
+      <li>Combined these models with Marcus-theory energy calculations in a development version of the lab's eMap software.</li>
+      <li>An automated screening pipeline (sequence clustering, genome-neighborhood filtering, AlphaFold 3 modeling, electron-transfer analysis) that narrowed 18,000+ bCcP-superfamily sequences to 11 candidate MauG-like enzymes for experimental characterization by the Elliott group.</li>
+    </ul>
+  </article>
+
+  <article class="role">
+    <h3>Dries Lab, BU Chobanian &amp; Avedisian School of Medicine <span>September 2024 - May 2026</span></h3>
+    <p class="title">Computational biology - scientific software</p>
+    <ul>
+      <li>Lead author of dbVisuals (R package, not yet released) and author and maintainer of its engines rDeckgl and rMosaic: database-backed, GPU-accelerated interactive visualization that handles 20 million points on a laptop.</li>
+      <li>Co-developed dbverse, a database-backed framework for larger-than-memory analysis of millions of cells on ordinary computers.</li>
+    </ul>
+  </article>
+
+  <article class="role">
+    <h3>Vajda Lab, Boston University <span>September 2024 - March 2025</span></h3>
+    <p class="title">Computational chemistry - ML-guided docking</p>
+    <ul>
+      <li>Prepared the protein-ligand structure datasets used to train and test a graph-neural-network docking method, and wrote the Python scripts that benchmarked more than 3,500 predicted docking models against reference structures.</li>
+    </ul>
+  </article>
+</section>
+
+<section id="engineering">
+  <h2>Engineering</h2>
+  <article class="role">
+    <h3><a href="https://www.macroglide.com/">MacroGlide</a> <span>June 2024 - present</span></h3>
+    <p class="title">Co-founder and Chief Technology Officer</p>
+    <ul>
+      <li>Lead a team of 5+ engineers building automated AI content pipelines for social media and an automated financial newsletter platform (multi-source data acquisition, agentic news selection and writing with automated quality scoring, email delivery).</li>
+    </ul>
+  </article>
+</section>
+
+<section id="publications">
+  <h2>Publications and manuscripts</h2>
+  <ul class="pubs">
+    <li>E. C. Ruiz, V. Jarzabek, J. Chen, <b>T. Rizvanov</b>, I. Amin, R. Dries. "dbverse scales spatial omics analysis with embedded analytical databases." bioRxiv, 2026. <a href="https://doi.org/10.64898/2026.08.09.743742">DOI: 10.64898/2026.08.09.743742</a></li>
+    <li>A. J. Kranc, <b>T. Rizvanov</b>, S. J. Elliott, K. B. Bravaya. "Unearthing Family Secrets: Searching for Shared Electron Transfer Pathways in the bCcP Superfamily." Submitted, 2026; <a href="https://acs.digitellinc.com/p/s/screening-protein-families-for-shared-electron-transfer-pathways-a-quest-for-maug-like-enzymes-in-the-bccpmaug-superfamily-poster-board-1156-660786">presented at ACS Fall 2026 (COMP)</a>.</li>
+    <li><b>T. Rizvanov</b>, E. C. Ruiz, R. Dries. "dbVisuals: hardware-accelerated and interactive visualizations for spatial omics in R." In preparation, 2026.</li>
+    <li><b>T. Rizvanov</b>, K. B. Bravaya. Deep-learning prediction of electronic couplings for protein electron transfer. Manuscript in preparation, 2026.</li>
+  </ul>
+</section>
+
+<section id="awards">
+  <h2>Awards</h2>
+  <ul>
+    <li>Outstanding Research Award, ACS Fall 2026 National Meeting, Division of Computers in Chemistry (COMP).</li>
+    <li>Winner, ClawBio Hackathons: Agentic Genomics, 2026.</li>
+    <li>Three-time winner, National Stage of Chemistry Olympiad, 2021-2023.</li>
+  </ul>
+</section>
+
+</main>
+</body>
+</html>
