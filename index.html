@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Timur Rizvanov</title>
-<meta name="description" content="Timur Rizvanov - machine learning and computational chemistry researcher at Boston University; author of the rDeckgl and rMosaic R packages.">
+<meta name="description" content="Timur Rizvanov - open-source scientific software and machine learning for chemistry and biology: dbVisuals, rDeckgl, rMosaic, dbverse, PRSGuard.">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,134 +12,164 @@
 
 <header>
   <h1>Timur Rizvanov</h1>
-  <p class="lede">Machine learning and computational chemistry researcher at Boston University, where I study Chemistry and Computer Science (double major, expected May 2027). I build models of protein electron transfer and open-source software for large-scale scientific data.</p>
+  <p class="lede">I build scientific software and machine-learning models for chemistry and biology: GPU-accelerated visualization of millions of cells, database-backed analysis that outgrows memory, and neural networks that replace quantum-chemistry calculations. Chemistry and Computer Science at Boston University, class of 2027.</p>
   <nav>
-    <a href="https://github.com/TiRizvanov">GitHub</a>
-    <a href="https://www.linkedin.com/in/timurrizvanov">LinkedIn</a>
-    <a href="mailto:timurr@bu.edu">timurr@bu.edu</a>
+    <a class="button primary" href="assets/Timur_Rizvanov_CV.pdf">CV (PDF)</a>
+    <a class="button" href="https://github.com/TiRizvanov">GitHub</a>
+    <a class="button" href="https://www.linkedin.com/in/timurrizvanov">LinkedIn</a>
+    <a class="button" href="mailto:timurr@bu.edu">timurr@bu.edu</a>
   </nav>
 </header>
 
-<section id="code">
-  <h2>Open-source code</h2>
-  <p>Two R packages that I wrote and maintain, both released on CRAN under the MIT license. Each one bundles a JavaScript rendering layer with an R interface, hydrates data through DuckDB, and ships Shiny bindings, tests and vignettes.</p>
+<section id="projects">
+  <h2>Projects</h2>
 
   <article class="project">
-    <h3>rDeckgl</h3>
-    <p>R bindings for deck.gl: large interactive WebGL visualizations from R through htmlwidgets, with DuckDB-backed data hydration and Shiny integration.</p>
-    <p class="links">
-      <a href="https://github.com/TiRizvanov/rDeckgl">Source on GitHub</a>
-      <a href="https://cran.r-project.org/package=rDeckgl">CRAN</a>
-    </p>
-<pre><code>library(rDeckgl)
-
-spec &lt;- list(
-  `@@type` = "DeckGL",
-  initialViewState = list(longitude = -122.4, latitude = 37.76, zoom = 12),
-  layers = list(
-    list(
-      `@@type` = "ScatterplotLayer",
-      id   = "points",
-      data = list(type = "duckdb", query = "SELECT lon, lat, radius FROM points"),
-      getPosition  = "@@=[lon, lat]",
-      getRadius    = "@@=radius",
-      getFillColor = c(255, 0, 0)
-    )
-  )
-)
-
-points &lt;- data.frame(
-  lon    = c(-122.40, -122.45, -122.35),
-  lat    = c( 37.76,   37.78,   37.74),
-  radius = c(100,      150,     200)
-)
-
-deckgl(spec, data = list(points = points), width = "100%", height = "500px")</code></pre>
+    <div class="media">
+      <a href="assets/dbvisuals-tissue.jpg"><img src="assets/dbvisuals-tissue.jpg" width="1400" height="1002" alt="A whole tissue section drawn as millions of colored points, with a zoomed region showing individual cell outlines"></a>
+      <a href="assets/dbvisuals-design.jpg"><img src="assets/dbvisuals-design.jpg" width="1400" height="768" loading="lazy" alt="dbVisuals package design: Mosaic and deck.gl wrapped by rMosaic and rDeckgl, fed through Apache Arrow and GeoArrow from DuckDB-backed storage"></a>
+      <p class="caption">A whole tissue section with a zoomed region of single-cell outlines, and the package design behind it.</p>
+    </div>
+    <div class="body">
+      <p class="kicker">Lead author - R package</p>
+      <h3>dbVisuals</h3>
+      <p>Interactive, hardware-accelerated visualization for spatial omics in R. Queries run in DuckDB, results travel as Arrow, and the browser draws them on the GPU, so a tissue with millions of cells stays explorable on a laptop.</p>
+      <ul class="stats">
+        <li><b>20 million</b> points on a 16 GB laptop</li>
+        <li><b>30x+</b> faster than static ggplot2 at that size</li>
+        <li><b>3-4x</b> less memory</li>
+      </ul>
+      <p class="tags"><span>R</span><span>DuckDB</span><span>Apache Arrow</span><span>deck.gl</span><span>Mosaic</span><span>WebGL</span></p>
+      <p class="links"><span class="note">Repository opens with the release; manuscript in preparation</span></p>
+    </div>
   </article>
 
   <article class="project">
-    <h3>rMosaic</h3>
-    <p>R bindings for the Mosaic declarative visualization framework: linked, interactive plots with brushing and cross-filtering, queried through DuckDB or DuckDB-WASM in the browser, with selections exported back to R.</p>
-    <p class="links">
-      <a href="https://github.com/TiRizvanov/rMosaic">Source on GitHub</a>
-      <a href="https://cran.r-project.org/package=rMosaic">CRAN</a>
-    </p>
-<pre><code>library(rMosaic)
+    <div class="media">
+      <a href="assets/rdeckgl-time.png"><img src="assets/rdeckgl-time.png" width="1400" height="856" loading="lazy" alt="Line chart of end-to-end render time against number of points for ggplot2, plotly WebGL and rDeckgl"></a>
+      <p class="caption">End-to-end time to a rendered plot against number of points, both on log scales. rDeckgl stays nearly flat while static ggplot2 keeps climbing.</p>
+    </div>
+    <div class="body">
+      <p class="kicker">Author and maintainer - on CRAN</p>
+      <h3>rDeckgl</h3>
+      <p>R bindings for deck.gl. Describe a WebGL visualization as an R list, JSON or YAML, point its layers at SQL queries, and the package hydrates them through DuckDB and renders in an htmlwidget or Shiny app.</p>
+<pre><code>deckgl(spec, data = list(points = points))
 
-spec &lt;- '{
-  "data": { "df": {} },
-  "plot": [{
-    "mark": "dot",
-    "data": { "from": "df" },
-    "x": "x", "y": "y", "fill": "grp"
-  }],
-  "width": 600, "height": 400
-}'
+# inside spec, a layer reads straight from SQL
+data = list(type = "duckdb",
+            query = "SELECT lon, lat, radius FROM points")</code></pre>
+      <p class="tags"><span>R</span><span>JavaScript</span><span>deck.gl</span><span>DuckDB</span><span>Shiny</span></p>
+      <p class="links">
+        <a class="button primary" href="https://github.com/TiRizvanov/rDeckgl">View repository</a>
+        <a class="button" href="https://cran.r-project.org/package=rDeckgl">CRAN</a>
+      </p>
+    </div>
+  </article>
 
-runMosaicApp(spec = spec, specType = "json", data = list(df = df))</code></pre>
+  <article class="project">
+    <div class="media">
+      <a href="assets/rmosaic-fps.png"><img src="assets/rmosaic-fps.png" width="1400" height="856" loading="lazy" alt="Line chart of median frames per second during pan and zoom against number of points for plotly, Mosaic and rDeckgl"></a>
+      <p class="caption">Median frame rate while panning and zooming. Mosaic's raster mode holds a steady rate up to a million points, and rDeckgl stays near 200 FPS.</p>
+    </div>
+    <div class="body">
+      <p class="kicker">Author and maintainer - on CRAN</p>
+      <h3>rMosaic</h3>
+      <p>R bindings for the Mosaic declarative visualization framework. Linked plots with brushing, cross-filtering and pan/zoom, queried through DuckDB or DuckDB-WASM in the browser, with selections pulled back into R as a data frame.</p>
+<pre><code>runMosaicApp(spec = spec, specType = "json",
+             data = list(df = df))
+
+# brush in the browser, get the rows back in R
+runMosaicExport(spec = spec, specType = "json",
+                data = list(df = df))</code></pre>
+      <p class="tags"><span>R</span><span>JavaScript</span><span>Mosaic</span><span>DuckDB-WASM</span><span>Shiny</span></p>
+      <p class="links">
+        <a class="button primary" href="https://github.com/TiRizvanov/rMosaic">View repository</a>
+        <a class="button" href="https://cran.r-project.org/package=rMosaic">CRAN</a>
+      </p>
+    </div>
+  </article>
+
+  <article class="project">
+    <div class="media">
+      <a href="assets/dbverse-workflow.png"><img src="assets/dbverse-workflow.png" width="1400" height="686" loading="lazy" alt="Tissue image next to a chart of runtime against number of cells for three Giotto backends; the database backend completes 10 million cells in 209 seconds"></a>
+      <a href="assets/dbverse-points.png"><img src="assets/dbverse-points.png" width="1400" height="743" loading="lazy" alt="Point-in-polygon query diagram next to a chart of spatial intersection time against number of points; 1 billion points counted in 10.7 seconds"></a>
+      <p class="caption">Benchmark panels: a complete analysis workflow on 10 million cells, and a spatial intersection over 1 billion points.</p>
+    </div>
+    <div class="body">
+      <p class="kicker">Co-developer - preprint on bioRxiv</p>
+      <h3>dbverse</h3>
+      <p>An ecosystem of libraries for larger-than-memory scientific data analysis on embedded analytical databases. Matrices, spatial geometries and genomic intervals live in DuckDB and are used through familiar R interfaces, so millions of cells can be analyzed on an ordinary computer.</p>
+      <p class="tags"><span>R</span><span>DuckDB</span><span>SQL</span><span>Spatial omics</span></p>
+      <p class="links">
+        <a class="button primary" href="https://github.com/dbverse-org/dbverse">View repository</a>
+        <a class="button" href="https://doi.org/10.64898/2026.08.09.743742">Preprint</a>
+        <a class="button" href="https://dbverse-org.github.io/dbverse/">Docs</a>
+      </p>
+    </div>
+  </article>
+
+  <article class="project">
+    <div class="media">
+      <a href="assets/prsguard-pipeline.png"><img src="assets/prsguard-pipeline.png" width="1400" height="788" loading="lazy" alt="PRSGuard pipeline slide: an agent plans the run, a deterministic core harmonizes, scores, audits evidence and applies the gate for each polygenic score"></a>
+      <a href="assets/prsguard-rules.png"><img src="assets/prsguard-rules.png" width="1400" height="788" loading="lazy" alt="Slide titled The agent plans, the rules decide: the agent plans and explains, a locked deterministic core makes the gate decision"></a>
+      <p class="caption">From the hackathon slides: the pipeline, and the boundary between the agent and the deterministic core.</p>
+    </div>
+    <div class="body">
+      <p class="kicker">Winner, ClawBio Hackathons: Agentic Genomics 2026 - team project</p>
+      <h3>PRSGuard</h3>
+      <p>Software can usually produce a polygenic risk score; whether that number can be interpreted for a given person is a separate question. PRSGuard checks the evidence behind each score and answers SUPPORTED, RAW_ONLY or ABSTAIN. An LLM agent gathers evidence and calls tools, but deterministic code alone decides what may be reported.</p>
+      <p class="tags"><span>Python</span><span>LLM agents</span><span>PGS Catalog</span><span>1000 Genomes</span><span>Next.js</span></p>
+      <p class="links">
+        <a class="button primary" href="https://github.com/rinatrizvanov/prsguard-demo">View repository</a>
+        <a class="button" href="https://rinatrizvanov.github.io/prsguard-demo/">Live demo</a>
+      </p>
+    </div>
+  </article>
+
+  <article class="project">
+    <div class="media">
+      <a href="assets/newsletter.png"><img src="assets/newsletter.png" width="1364" height="773" loading="lazy" alt="MacroGlide newsletter archive listing daily summaries, weekly summaries and next-week outlooks"></a>
+      <p class="caption">The public archive of the United States edition.</p>
+    </div>
+    <div class="body">
+      <p class="kicker">Co-founder and CTO, MacroGlide</p>
+      <h3>MacroGlide Newsletter</h3>
+      <p>An automated financial newsletter platform: multi-source data acquisition, agentic news selection and writing with automated quality scoring, and its own email delivery infrastructure. Daily US, EU and Asia editions, gaining 5,000+ new subscribers a month.</p>
+      <p class="tags"><span>TypeScript</span><span>NestJS</span><span>Python</span><span>PostgreSQL</span><span>LLM agents</span></p>
+      <p class="links">
+        <a class="button primary" href="https://www.macroglide.com/newsletter/us/archive">Read the archive</a>
+        <a class="button" href="https://www.macroglide.com/">macroglide.com</a>
+      </p>
+    </div>
   </article>
 </section>
 
 <section id="research">
-  <h2>Research</h2>
-
-  <article class="role">
-    <h3>Bravaya Lab, Boston University <span>September 2025 - present</span></h3>
-    <p class="title">Machine learning and computational chemistry - protein electron transfer</p>
-    <ul>
-      <li>Deep-learning models that predict electronic couplings between protein residues in seconds instead of expensive quantum-chemistry calculations, trained on 270,000+ Q-Chem calculations across 38 residue-pair types.</li>
-      <li>Combined these models with Marcus-theory energy calculations in a development version of the lab's eMap software.</li>
-      <li>An automated screening pipeline (sequence clustering, genome-neighborhood filtering, AlphaFold 3 modeling, electron-transfer analysis) that narrowed 18,000+ bCcP-superfamily sequences to 11 candidate MauG-like enzymes for experimental characterization by the Elliott group.</li>
-    </ul>
-  </article>
-
-  <article class="role">
-    <h3>Dries Lab, BU Chobanian &amp; Avedisian School of Medicine <span>September 2024 - May 2026</span></h3>
-    <p class="title">Computational biology - scientific software</p>
-    <ul>
-      <li>Lead author of dbVisuals (R package, not yet released) and author and maintainer of its engines rDeckgl and rMosaic: database-backed, GPU-accelerated interactive visualization that handles 20 million points on a laptop.</li>
-      <li>Co-developed dbverse, a database-backed framework for larger-than-memory analysis of millions of cells on ordinary computers.</li>
-    </ul>
-  </article>
-
-  <article class="role">
-    <h3>Vajda Lab, Boston University <span>September 2024 - March 2025</span></h3>
-    <p class="title">Computational chemistry - ML-guided docking</p>
-    <ul>
-      <li>Prepared the protein-ligand structure datasets used to train and test a graph-neural-network docking method, and wrote the Python scripts that benchmarked more than 3,500 predicted docking models against reference structures.</li>
-    </ul>
-  </article>
-</section>
-
-<section id="engineering">
-  <h2>Engineering</h2>
-  <article class="role">
-    <h3><a href="https://www.macroglide.com/">MacroGlide</a> <span>June 2024 - present</span></h3>
-    <p class="title">Co-founder and Chief Technology Officer</p>
-    <ul>
-      <li>Lead a team of 5+ engineers building automated AI content pipelines for social media and an automated financial newsletter platform (multi-source data acquisition, agentic news selection and writing with automated quality scoring, email delivery).</li>
-    </ul>
-  </article>
+  <h2>Current research</h2>
+  <div class="prose">
+    <h3>Machine learning for protein electron transfer <span>Bravaya Lab, Boston University</span></h3>
+    <p>I train deep-learning models that predict electronic couplings between protein residues in seconds instead of running a quantum-chemistry calculation for every pair. They are trained on 270,000+ Q-Chem calculations across 38 residue-pair types, and combined with Marcus-theory energetics in a development version of the lab's eMap software.</p>
+    <p>With the Elliott group I built a screening pipeline (sequence clustering, genome-neighborhood filtering, AlphaFold 3 modeling, electron-transfer analysis) that narrowed 18,000+ bCcP-superfamily sequences to 11 candidate MauG-like enzymes for experimental characterization. I presented it as a poster at ACS Fall 2026, where I received the Outstanding Research Award of the Division of Computers in Chemistry.</p>
+    <p class="links"><a class="button" href="https://acs.digitellinc.com/p/s/screening-protein-families-for-shared-electron-transfer-pathways-a-quest-for-maug-like-enzymes-in-the-bccpmaug-superfamily-poster-board-1156-660786">ACS Fall 2026 poster abstract</a></p>
+  </div>
 </section>
 
 <section id="publications">
   <h2>Publications and manuscripts</h2>
   <ul class="pubs">
     <li>E. C. Ruiz, V. Jarzabek, J. Chen, <b>T. Rizvanov</b>, I. Amin, R. Dries. "dbverse scales spatial omics analysis with embedded analytical databases." bioRxiv, 2026. <a href="https://doi.org/10.64898/2026.08.09.743742">DOI: 10.64898/2026.08.09.743742</a></li>
-    <li>A. J. Kranc, <b>T. Rizvanov</b>, S. J. Elliott, K. B. Bravaya. "Unearthing Family Secrets: Searching for Shared Electron Transfer Pathways in the bCcP Superfamily." Submitted, 2026; <a href="https://acs.digitellinc.com/p/s/screening-protein-families-for-shared-electron-transfer-pathways-a-quest-for-maug-like-enzymes-in-the-bccpmaug-superfamily-poster-board-1156-660786">presented at ACS Fall 2026 (COMP)</a>.</li>
+    <li>A. J. Kranc, <b>T. Rizvanov</b>, S. J. Elliott, K. B. Bravaya. "Unearthing Family Secrets: Searching for Shared Electron Transfer Pathways in the bCcP Superfamily." Submitted, 2026.</li>
     <li><b>T. Rizvanov</b>, E. C. Ruiz, R. Dries. "dbVisuals: hardware-accelerated and interactive visualizations for spatial omics in R." In preparation, 2026.</li>
     <li><b>T. Rizvanov</b>, K. B. Bravaya. Deep-learning prediction of electronic couplings for protein electron transfer. Manuscript in preparation, 2026.</li>
   </ul>
 </section>
 
-<section id="awards">
-  <h2>Awards</h2>
-  <ul>
-    <li>Outstanding Research Award, ACS Fall 2026 National Meeting, Division of Computers in Chemistry (COMP).</li>
-    <li>Winner, ClawBio Hackathons: Agentic Genomics, 2026.</li>
-    <li>Three-time winner, National Stage of Chemistry Olympiad, 2021-2023.</li>
-  </ul>
-</section>
+<footer>
+  <a href="assets/Timur_Rizvanov_CV.pdf">CV</a>
+  <a href="https://github.com/TiRizvanov">GitHub</a>
+  <a href="https://www.linkedin.com/in/timurrizvanov">LinkedIn</a>
+  <a href="mailto:timurr@bu.edu">timurr@bu.edu</a>
+</footer>
 
 </main>
 </body>
