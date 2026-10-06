@@ -26,9 +26,9 @@
 
   <article class="project">
     <div class="media">
-      <a href="assets/dbvisuals-tissue.jpg"><img src="assets/dbvisuals-tissue.jpg" width="1600" height="1002" alt="Breast cancer tissue section colored by transcripts per cell, with Region and Detail insets at successively higher magnification that resolve individual transcripts inside cells"></a>
-      <a href="assets/dbvisuals-design.jpg"><img src="assets/dbvisuals-design.jpg" width="1600" height="388" loading="lazy" alt="Overview diagram: input data from GiottoDB, dbverse, Arrow, Parquet and GeoArrow flows into dbVisuals, with no-code creation in SQLRooms or code-based creation in R, and is drawn by Mosaic and deck.gl through the rMosaic and rDeckgl htmlwidgets"></a>
-      <p class="caption">A 10x Atera breast cancer section in the R viewer, zooming from whole tissue down to individual transcripts inside cells, and how the pieces fit together.</p>
+      <a href="assets/dbvisuals-tissue.jpg"><img src="assets/dbvisuals-tissue.jpg" width="1160" height="700" alt="Xenium breast cancer tissue section colored by transcripts per cell, with Region and Detail insets at successively higher magnification that resolve individual cells"></a>
+      <a href="assets/dbvisuals-design.jpg"><img src="assets/dbvisuals-design.jpg" width="1340" height="324" loading="lazy" alt="Overview diagram: input data from GiottoDB, dbverse, Arrow, Parquet and GeoArrow flows into dbVisuals, with no-code creation in SQLRooms or code-based creation in R, and is drawn by Mosaic and deck.gl through the rMosaic and rDeckgl htmlwidgets"></a>
+      <p class="caption">A Xenium breast cancer section in the R viewer, zooming from whole tissue down to single cells, and how the pieces fit together.</p>
     </div>
     <div class="body">
       <p class="kicker">Lead author - R package</p>
@@ -46,8 +46,8 @@
 
   <article class="project">
     <div class="media">
-      <a href="assets/rdeckgl-time.png"><img src="assets/rdeckgl-time.png" width="1600" height="845" loading="lazy" alt="Line chart of startup time in seconds against number of points, from one thousand to 20 million, for ggplot2 PNG, plotly SVG, plotly WebGL and rDeckgl"></a>
-      <p class="caption">Startup time from a DuckDB file to a rendered view. With Arrow-file transport rDeckgl draws 1 million points in 0.25 s against 2.16 s for a ggplot2 PNG, and 20 million in 1.26 s against 40.82 s. Measured on development builds ahead of the CRAN release.</p>
+      <a href="assets/rdeckgl-time.png"><img src="assets/rdeckgl-time.png" width="1600" height="688" loading="lazy" alt="Two line charts of seconds against number of points, from one thousand to 20 million, for ggplot2 PNG, plotly WebGL and rDeckgl: time to draw on the left and end-to-end time on the right; rDeckgl stays lowest from about 100 thousand points upward"></a>
+      <p class="caption">Median time to draw (left) and end to end from a DuckDB file to a rendered view (right). End to end, rDeckgl with Arrow-file transport takes 0.25 s for 1 million points against 2.16 s for a ggplot2 PNG, and 1.26 s for 20 million against 40.82 s. Measured on development builds ahead of the CRAN release.</p>
     </div>
     <div class="body">
       <p class="kicker">Author and maintainer - on CRAN</p>
@@ -68,8 +68,9 @@ data = list(type = "duckdb",
 
   <article class="project">
     <div class="media">
-      <a href="assets/rmosaic-linked.png"><img src="assets/rmosaic-linked.png" width="1600" height="558" loading="lazy" alt="dbVisuals Canvas with a deck.gl spatial map and a Mosaic histogram side by side; the brushed transcripts are gold on the map and blue in the histogram"></a>
-      <p class="caption">Linked views in dbVisuals Canvas: one brush over Vizgen MERFISH transcripts on the deck.gl map filters the Mosaic histogram beside it.</p>
+      <a href="assets/rmosaic-gaia-overview.png"><img src="assets/rmosaic-gaia-overview.png" width="1400" height="762" loading="lazy" alt="Gaia star catalog rendered by rMosaic: a density map of the sky showing the Milky Way, histograms of magnitude and parallax, and a color against magnitude density plot"></a>
+      <a href="assets/rmosaic-gaia-brushed.png"><img src="assets/rmosaic-gaia-brushed.png" width="1400" height="762" loading="lazy" alt="The same views after brushing high-parallax stars in the histogram: the sky map thins out and the color against magnitude plot resolves into a Hertzsprung-Russell main sequence"></a>
+      <p class="caption">The Gaia star catalog vignette rendered by rMosaic: 5 million stars queried in DuckDB-WASM. Brushing the nearby, high-parallax stars in the histogram (below) cross-filters every view and brings out the Hertzsprung-Russell diagram on the right.</p>
     </div>
     <div class="body">
       <p class="kicker">Author and maintainer - on CRAN</p>
