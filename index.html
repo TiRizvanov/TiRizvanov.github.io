@@ -26,18 +26,18 @@
 
   <article class="project">
     <div class="media">
-      <a href="assets/dbvisuals-tissue.jpg"><img src="assets/dbvisuals-tissue.jpg" width="1400" height="1002" alt="A whole tissue section drawn as millions of colored points, with a zoomed region showing individual cell outlines"></a>
-      <a href="assets/dbvisuals-design.jpg"><img src="assets/dbvisuals-design.jpg" width="1400" height="768" loading="lazy" alt="dbVisuals package design: Mosaic and deck.gl wrapped by rMosaic and rDeckgl, fed through Apache Arrow and GeoArrow from DuckDB-backed storage"></a>
-      <p class="caption">A whole tissue section with a zoomed region of single-cell outlines, and the package design behind it.</p>
+      <a href="assets/dbvisuals-tissue.jpg"><img src="assets/dbvisuals-tissue.jpg" width="1600" height="1002" alt="Breast cancer tissue section colored by transcripts per cell, with Region and Detail insets at successively higher magnification that resolve individual transcripts inside cells"></a>
+      <a href="assets/dbvisuals-design.jpg"><img src="assets/dbvisuals-design.jpg" width="1600" height="388" loading="lazy" alt="Overview diagram: input data from GiottoDB, dbverse, Arrow, Parquet and GeoArrow flows into dbVisuals, with no-code creation in SQLRooms or code-based creation in R, and is drawn by Mosaic and deck.gl through the rMosaic and rDeckgl htmlwidgets"></a>
+      <p class="caption">A 10x Atera breast cancer section in the R viewer, zooming from whole tissue down to individual transcripts inside cells, and how the pieces fit together.</p>
     </div>
     <div class="body">
       <p class="kicker">Lead author - R package</p>
       <h3>dbVisuals</h3>
       <p>Interactive, hardware-accelerated visualization for spatial omics in R. Queries run in DuckDB, results travel as Arrow, and the browser draws them on the GPU, so a tissue with millions of cells stays explorable on a laptop.</p>
       <ul class="stats">
-        <li><b>20 million</b> points on a 16 GB laptop</li>
-        <li><b>30x+</b> faster than static ggplot2 at that size</li>
-        <li><b>3-4x</b> less memory</li>
+        <li><b>2.5 s</b> to draw 20 million points on a 16 GB laptop</li>
+        <li><b>16x</b> faster than a static ggplot2 PNG at that size</li>
+        <li><b>1.3 GB</b> peak R memory, against 5.0 GB for ggplot2</li>
       </ul>
       <p class="tags"><span>R</span><span>DuckDB</span><span>Apache Arrow</span><span>deck.gl</span><span>Mosaic</span><span>WebGL</span></p>
       <p class="links"><span class="note">Repository opens with the release; manuscript in preparation</span></p>
@@ -46,8 +46,8 @@
 
   <article class="project">
     <div class="media">
-      <a href="assets/rdeckgl-time.png"><img src="assets/rdeckgl-time.png" width="1400" height="856" loading="lazy" alt="Line chart of end-to-end render time against number of points for ggplot2, plotly WebGL and rDeckgl"></a>
-      <p class="caption">End-to-end time to a rendered plot against number of points, both on log scales. rDeckgl stays nearly flat while static ggplot2 keeps climbing.</p>
+      <a href="assets/rdeckgl-time.png"><img src="assets/rdeckgl-time.png" width="1600" height="845" loading="lazy" alt="Line chart of startup time in seconds against number of points, from one thousand to 20 million, for ggplot2 PNG, plotly SVG, plotly WebGL and rDeckgl"></a>
+      <p class="caption">Startup time from a DuckDB file to a rendered view. With Arrow-file transport rDeckgl draws 1 million points in 0.25 s against 2.16 s for a ggplot2 PNG, and 20 million in 1.26 s against 40.82 s. Measured on development builds ahead of the CRAN release.</p>
     </div>
     <div class="body">
       <p class="kicker">Author and maintainer - on CRAN</p>
@@ -68,8 +68,8 @@ data = list(type = "duckdb",
 
   <article class="project">
     <div class="media">
-      <a href="assets/rmosaic-fps.png"><img src="assets/rmosaic-fps.png" width="1400" height="856" loading="lazy" alt="Line chart of median frames per second during pan and zoom against number of points for plotly, Mosaic and rDeckgl"></a>
-      <p class="caption">Median frame rate while panning and zooming. Mosaic's raster mode holds a steady rate up to a million points, and rDeckgl stays near 200 FPS.</p>
+      <a href="assets/rmosaic-linked.png"><img src="assets/rmosaic-linked.png" width="1600" height="558" loading="lazy" alt="dbVisuals Canvas with a deck.gl spatial map and a Mosaic histogram side by side; the brushed transcripts are gold on the map and blue in the histogram"></a>
+      <p class="caption">Linked views in dbVisuals Canvas: one brush over Vizgen MERFISH transcripts on the deck.gl map filters the Mosaic histogram beside it.</p>
     </div>
     <div class="body">
       <p class="kicker">Author and maintainer - on CRAN</p>
